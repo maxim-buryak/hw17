@@ -1,0 +1,34 @@
+---
+- name: Install and start Nginx
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: latest
+
+    - name: Ensure Nginx is running
+      service:
+        name: nginx
+        state: started
+        enabled: true
+      notify: restart nginx
+
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+
+- name: Install and configure MySQL
+  hosts: all
+  become: true
+
+  roles:
+      - geerlingguy.mysql
+ 
+
+
+
